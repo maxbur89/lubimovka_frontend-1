@@ -10,7 +10,6 @@ import TeamData from './assets/mock-data-team.json';
 
 const Team: NextPage = () => (
   <>
-    <ArtDirectorateSection data={ArtDirectorateData} />
     <TeamSection data={TeamData}/>
     <TeamVolunteersSection data={VolunteersData}/>
   </>

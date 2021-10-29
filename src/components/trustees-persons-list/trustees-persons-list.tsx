@@ -26,16 +26,12 @@ const TrusteesPersons: FC<TrusteesPersonsProps> = ({ trustees }) => {
     spacing: 30,
     slidesPerView: 3,
     breakpoints: {
-      '(max-width: 767px)': {
-        slidesPerView: 3,
-        mode: 'free-snap',
-      },
-      '(max-width: 750px)': {
-        slidesPerView: 2.5,
+      '(max-width: 728px)': {
+        slidesPerView: 2,
         mode: 'free-snap',
       },
       '(max-width: 650px)': {
-        slidesPerView: 2,
+        slidesPerView: 1.5,
         mode: 'free-snap',
       },
       '(max-width: 520px)': {
@@ -56,7 +52,7 @@ const TrusteesPersons: FC<TrusteesPersonsProps> = ({ trustees }) => {
   return (
     <>
       {
-        screenWidth < 768 &&
+        Number(screenWidth) < 729 &&
         <div ref={sliderRef} className="keen-slider">
           {trustees.map((trustee) => (
             <div key={trustee.id} className="keen-slider__slide">
@@ -73,7 +69,7 @@ const TrusteesPersons: FC<TrusteesPersonsProps> = ({ trustees }) => {
       }
 
       {
-        screenWidth > 767 &&
+        Number(screenWidth) > 728 &&
         <ul className={style.trusteesList}>
           {trustees.map((trustee) => (
             <li key={trustee.id} className={style.trusteesListItem}>

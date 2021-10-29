@@ -14,18 +14,18 @@
   padding: 0;
   margin: 0;
   list-style: none;
-  row-gap: 60px;
+  row-gap: scale(60px);
 
   @media (max-width: 1239px) {
     display: grid;
     justify-content: space-between;
-    column-gap: 30px;
-    grid-template-columns: repeat(auto-fit, 210px);
+    column-gap: scale(30px);
+    grid-template-columns: repeat(auto-fit, scale(210px));
   }
 }
 
 .trusteesListItem {
-  max-width: 210px;
+  max-width: scale(210px);
 }
 
 .trusteesListItem:nth-of-type(8n+4),
@@ -39,7 +39,7 @@
   @media (max-width: 1239px) {
     display: block;
     min-width: none;
-    max-width: 210px;
+    max-width: scale(210px);
   }
 }
 
@@ -47,7 +47,7 @@
 .trusteesListItem:nth-of-type(8n+2),
 .trusteesListItem:nth-of-type(8n+6),
 .trusteesListItem:nth-of-type(8n+7) {
-  margin-right: 30px;
+  margin-right: scale(30px);
 
   @media (max-width: 1239px) {
     margin-right: 0;

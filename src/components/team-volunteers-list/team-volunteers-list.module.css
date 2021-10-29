@@ -10,19 +10,19 @@
   display: grid;
   max-width: 1440px;
   box-sizing: border-box;
-  padding: 54px 14% 0;
+  padding: scale(54px) 14% 0;
   margin: 0;
-  gap: 48px 30px;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: scale(48px) scale(30px);
+  grid-template-columns: repeat(auto-fit, minmax(scale(170px), 1fr));
   list-style: none;
 }
 
 .card {
-  max-width: 180px;
+  max-width: scale(180px);
 }
 
 .slidesContainer {
   display: flex;
   flex-wrap: nowrap;
-  padding: 23px 27px 0;
+  padding: scale(23px) scale(27px) 0;
 }
