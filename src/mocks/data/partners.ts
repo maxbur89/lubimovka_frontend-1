@@ -1,16 +1,22 @@
-import partnerLogo from '../assets/partners/partnerLogo.png';
+import { Partner } from 'api-typings';
 
-export default [
+import partnerLogo from '../assets/partners/fond-prohorova.png';
+
+const partners: Partner[] = [
   {
+    id: 1,
     name: 'Фонд Михаила Прохорова',
     url: '',
-    logo: partnerLogo.src,
+    image: partnerLogo.src,
     type: 'general'
   },
   {
+    id: 2,
     name: 'Фонд Михаила Прохорова',
     url: '',
-    logo: partnerLogo.src,
+    image: partnerLogo.src,
     type: 'general'
   },
 ];
+
+export default partners;

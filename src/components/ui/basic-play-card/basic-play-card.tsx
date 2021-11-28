@@ -1,14 +1,16 @@
 import { FC } from 'react';
 import cn from 'classnames/bind';
+
 import { Button } from '../button';
 import { InfoLink } from '../info-link';
-
 import { Url } from 'shared/types';
 
 import styles from './basic-play-card.module.css';
+
 const cx  = cn.bind(styles);
 
 export interface IBasicPlayCardProps {
+  type?: 'performance';
   play: {
     title: string;
     city: string;
@@ -25,6 +27,7 @@ export interface IBasicPlayCardProps {
 
 export const BasicPlayCard: FC<IBasicPlayCardProps> = (props) => {
   const {
+    type,
     play,
     author,
     buttonVisibility,
@@ -32,7 +35,7 @@ export const BasicPlayCard: FC<IBasicPlayCardProps> = (props) => {
 
   return (
     <article
-      className={cx('card')}
+      className={cx('card', type)}
     >
       <div className={cx('container')}>
         <h6 className={cx('title')}>{play.title}</h6>
