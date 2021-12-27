@@ -21,20 +21,9 @@ type PressRelease = {
   year: number,
   cover: Url,
   downloadLink: Url,
-  contents: Content[]
+  title: string,
+  contents: string,
 }
-
-type Content = TextContent<'text' | 'title' | 'preamble'> | ListContent
-
-type ListContent = {
-  content_type: 'list',
-  content_item: Record<'list', string[]>;
-}
-
-type TextContent<T extends string> = T extends T ? {
-  content_type: T,
-  content_item: Record<T, string>;
-} : never
 
 export const ForPressPressReleasesView: FC<IForPressPressReleasesViewProps> = (props) => {
 
@@ -98,30 +87,15 @@ export const ForPressPressReleasesView: FC<IForPressPressReleasesViewProps> = (p
           />
         </div>
       </div>
-      <article className={cx('pressReleaseText')}>
-        {pressReleaseSelected === undefined ?
-          <p>Пресс-релиз этого года не найден</p>
-          : pressReleaseSelected.contents.map((item, idx) => {
-            switch (item.content_type) {
-            case 'preamble':
-              return(<h6 key={idx}>{item.content_item.preamble}</h6>);
-            case 'title':
-              return(isMobile ? <h6 key={idx}>{item.content_item.title}</h6> : <h4 key={idx}>{item.content_item.title}</h4>);
-            case 'list':
-              return (
-                <ul key={idx}>
-                  {
-                    Array.isArray(item.content_item.list) &&
-                    item.content_item.list.map((listItem, idx) => {
-                      return(<li key={idx}>{listItem}</li>);
-                    })
-                  }
-                </ul>);
-            case 'text':
-              return(<p key={idx}>{item.content_item.text}</p>);
-            }
-          })}
-      </article>
+      {
+        pressReleaseSelected === undefined ?
+          <p className={cx('pressReleaseText', 'notFound')}>Пресс-релиз этого года не найден</p>
+          :
+          <article className={cx('pressReleaseText')}>
+            <p className={cx('preamble')}>{pressReleaseSelected.title}</p>
+            <div dangerouslySetInnerHTML={{ __html: pressReleaseSelected.contents }}/>
+          </article>
+      }
     </section>
   );
 };

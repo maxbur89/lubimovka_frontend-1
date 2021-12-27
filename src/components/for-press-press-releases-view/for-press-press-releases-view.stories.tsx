@@ -2,7 +2,7 @@ import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import { ForPressPressReleasesView } from './for-press-press-releases-view';
-import { pressRelease } from './assets/pressRelease';
+import { pressReleaseString } from './assets/pressReleaseString';
 
 export default {
   title: 'Components/ForPressPressReleasesView',
@@ -20,4 +20,4 @@ Default.parameters = {
   layout: 'fullscreen'
 };
 
-Default.args = pressRelease;
+Default.args = pressReleaseString;

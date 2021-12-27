@@ -95,7 +95,7 @@
   @media (max-width: $tablet-portrait) {
     width: scale(367px);
     min-width: unset;
-    margin-bottom: scale(59px);
+    margin-bottom: scale(56px);
   }
 }
 
@@ -132,19 +132,40 @@
   margin-left: scale(179px);
 
   @media (max-width: $tablet-portrait) {
+    margin-top: 0;
     margin-right: scale(24px);
     margin-left: scale(24px);
   }
 }
 
-.pressReleaseText > h6 {
+.notFound {
+  @mixin text;
+  @mixin textLarge;
+}
+
+.pressReleaseText > div > h1,
+.pressReleaseText > div > h2,
+.pressReleaseText > div > h3,
+.pressReleaseText > div > h4,
+.pressReleaseText > div > h5,
+.pressReleaseText > div > h6,
+.preamble {
   @mixin headline;
   @mixin headline6;
 
+  margin-top: scale(64px);
   margin-bottom: scale(24px);
+
+  @media (max-width: $tablet-portrait) {
+    @mixin headline;
+    @mixin headline4;
+
+    margin-top: scale(32px);
+    margin-bottom: scale(24px);
+  }
 }
 
-.pressReleaseText > p {
+.pressReleaseText > div > p {
   @mixin text;
   @mixin textLarge;
 
@@ -154,6 +175,18 @@
   @media (max-width: $tablet-portrait) {
     margin-bottom: scale(24px);
   }
+}
+
+.pressReleaseText > div > p > a {
+  color: var(--coal);
+  text-decoration: underline;
+  transition: background-color .5s ease-in, color .5s ease-in;
+}
+
+.pressReleaseText > div > p > a:hover {
+  background-color: var(--coal);
+  color: var(--white);
+  text-decoration: none;
 }
 
 .pressReleaseText > p ~ h6 {
@@ -170,19 +203,12 @@
   margin-bottom: 0;
 }
 
-.pressReleaseText > h4 {
-  @mixin headline;
-  @mixin headline4;
-
-  margin-top: scale(64px);
-  margin-bottom: scale(24px);
-}
-
-.pressReleaseText > ul {
+.pressReleaseText > div > ul {
   display: grid;
   padding: 0;
   padding-left: scale(60px);
   margin: 0;
+  margin-bottom: scale(64px);
   gap: scale(20px);
   list-style-type: none;
 
@@ -191,7 +217,11 @@
   }
 }
 
-.pressReleaseText > ul > li {
+.pressReleaseText > div > ul:last-child {
+  margin-bottom: 0;
+}
+
+.pressReleaseText > div > ul > li {
   @mixin text;
   @mixin textLarge;
 
@@ -201,7 +231,7 @@
   grid-template-columns: 10px 1fr;
 }
 
-.pressReleaseText > ul > li::before {
+.pressReleaseText > div > ul > li::before {
   width: 10px;
   height: 10px;
   background-color: var(--coal);
@@ -209,6 +239,6 @@
   content: "";
 }
 
-.pressReleaseText > ul > li:last-child {
+.pressReleaseText > div > ul > li:last-child {
   margin-bottom: 0;
 }
