@@ -62,6 +62,8 @@ const Contacts: NextPage = () => {
     question
   } = formState;
 
+  const timeoutDuration = 10000;
+
   const getNameError = () => {
     if (name.value.length < 2) {
       return 'Имя должно содержать минимум 2 символа';
@@ -134,7 +136,7 @@ const Contacts: NextPage = () => {
     }
 
     setFormSuccessfullySent(true);
-    setTimeout(() => resetForm(), 10000);
+    setTimeout(() => resetForm(), timeoutDuration);
   };
 
   return (
