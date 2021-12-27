@@ -12,6 +12,13 @@ import TextInput from 'components/ui/text-input/text-input';
 import TextArea from 'components/ui/text-area';
 import { Button } from 'components/ui/button';
 import { validEmailRegexp } from 'shared/constants/regexps';
+import { fetcher } from 'shared/fetcher';
+
+interface IQuestion {
+  question: string;
+  author_name: string;
+  author_email: string;
+}
 
 enum ActionTypes {
   FieldChange,
@@ -93,6 +100,16 @@ const Contacts: NextPage = () => {
     });
   };
 
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    sendQuestion({
+      author_name: name.value,
+      author_email: email.value,
+      question: question.value,
+    });
+  };
+
   const resetForm = () => {
     dispatch({
       type: ActionTypes.Reset,
@@ -100,10 +117,22 @@ const Contacts: NextPage = () => {
     setFormSuccessfullySent(false);
   };
 
-  const canSubmit = !getEmailError() && !getEmailError() && !getQuestionError();
+  const canSubmit = !getNameError() && !getEmailError() && !getQuestionError();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const sendQuestion = async (question: IQuestion) => {
+    try {
+      await fetcher<IQuestion>('/info/questions/', {
+        method: 'POST',
+        body: JSON.stringify(question),
+        headers: {
+          'Content-type': 'application/json'
+        },
+      });
+    } catch (error) {
+      // TODO: обработать  ошибки
+      return;
+    }
+
     setFormSuccessfullySent(true);
     setTimeout(() => resetForm(), 10000);
   };
