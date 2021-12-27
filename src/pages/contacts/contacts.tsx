@@ -65,8 +65,16 @@ const Contacts: NextPage = () => {
   const timeoutDuration = 10000;
 
   const getNameError = () => {
+    if (!name.value.length) {
+      return 'Это поле не может быть пустым';
+    }
+
     if (name.value.length < 2) {
-      return 'Имя должно содержать минимум 2 символа';
+      return 'Имя должно состоять более чем из 2 символов';
+    }
+
+    if (name.value.length > 50) {
+      return 'Имя должно состоять менее чем из 50 символов';
     }
 
     return;
@@ -74,11 +82,11 @@ const Contacts: NextPage = () => {
 
   const getEmailError = () => {
     if (!email.value.length) {
-      return 'Поле E-mail обязательно для заполнения';
+      return 'Это поле не может быть пустым';
     }
 
     if (!validEmailRegexp.test(email.value)) {
-      return 'Неверный формат адреса электронной почты';
+      return 'Введите правильный адрес электронной почты';
     }
 
     return;
@@ -86,7 +94,15 @@ const Contacts: NextPage = () => {
 
   const getQuestionError = () => {
     if (!question.value.length) {
-      return 'Поле обязательно для заполнения';
+      return 'Это поле не может быть пустым';
+    }
+
+    if (question.value.length < 2) {
+      return 'Вопрос должен состоять более чем из 2 символов';
+    }
+
+    if (question.value.length > 500) {
+      return 'Вопрос должен состоять менее чем из 500 символов';
     }
 
     return;
