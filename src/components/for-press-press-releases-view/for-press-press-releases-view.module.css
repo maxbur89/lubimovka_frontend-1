@@ -141,6 +141,14 @@
 .notFound {
   @mixin text;
   @mixin textLarge;
+
+  margin-top: scale(62px);
+  margin-left: scale(179px);
+
+  @media (max-width: $tablet-portrait) {
+    margin-right: scale(24px);
+    margin-left: scale(24px);
+  }
 }
 
 .pressReleaseText > div > h1,

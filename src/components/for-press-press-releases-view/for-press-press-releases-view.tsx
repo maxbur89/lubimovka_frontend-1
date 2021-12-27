@@ -13,8 +13,8 @@ import styles from './for-press-press-releases-view.module.css';
 const cx = cn.bind(styles);
 
 export interface IForPressPressReleasesViewProps {
-  defaultCover: string,
   pressReleases: PressRelease[],
+  years: number[],
 }
 
 type PressRelease = {
@@ -27,11 +27,10 @@ type PressRelease = {
 
 export const ForPressPressReleasesView: FC<IForPressPressReleasesViewProps> = (props) => {
 
-  const pressReleaseYears = props.pressReleases.map((i)=> {return i.year;}).sort((a, b) => b - a);
+  const pressReleaseYears = props.years.sort((a, b) => b - a);
   const pressReleaseDefaultYear = pressReleaseYears[0];
   const [pressReleaseYearSelected, setPressReleaseYearSelected] = useState<string[] | number>(pressReleaseDefaultYear);
   const pressReleaseSelected = props.pressReleases.find(i => i.year === pressReleaseYearSelected);
-  const defaultCover = props.defaultCover;
 
   const isMobile = useMediaQuery(`(max-width: ${breakpoints['tablet-portrait']})`);
 
@@ -76,20 +75,22 @@ export const ForPressPressReleasesView: FC<IForPressPressReleasesViewProps> = (p
           href={pressReleaseSelected !== undefined ? pressReleaseSelected.downloadLink : ''}
         />
       </nav>
-      <div className={cx('coverContainer')}>
-        <div className={cx('cover')}>
-          <Image
-            layout="fill"
-            objectFit="cover"
-            src={pressReleaseSelected ? pressReleaseSelected.cover : defaultCover}
-            alt={pressReleaseYearSelected ? `Обложка фестиваля ${pressReleaseYearSelected} года` :
-              'Обложка фестиваля не найдена'}
-          />
+      {pressReleaseSelected && pressReleaseSelected.cover !== null &&
+        <div className={cx('coverContainer')}>
+          <div className={cx('cover')}>
+            <Image
+              layout="fill"
+              objectFit="cover"
+              src={pressReleaseSelected.cover}
+              alt={pressReleaseYearSelected ? `Обложка фестиваля ${pressReleaseYearSelected} года` :
+                'Обложка фестиваля не найдена'}
+            />
+          </div>
         </div>
-      </div>
+      }
       {
         pressReleaseSelected === undefined ?
-          <p className={cx('pressReleaseText', 'notFound')}>Пресс-релиз этого года не найден</p>
+          <p className={cx('notFound')}>Пресс-релиз этого года не найден</p>
           :
           <article className={cx('pressReleaseText')}>
             <p className={cx('preamble')}>{pressReleaseSelected.title}</p>
