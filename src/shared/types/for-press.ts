@@ -21,7 +21,7 @@ export type PressReleases = {
 }
 
 export type PressRelease = {
-  year: number,
+  year?: number,
   cover: Url,
   downloadLink: Url,
   title: string,

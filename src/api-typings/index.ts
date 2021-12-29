@@ -45,6 +45,7 @@ export type { Performance } from './models/Performance';
 export type { Persons } from './models/Persons';
 export type { Place } from './models/Place';
 export type { Play } from './models/Play';
+export type { PressRelease} from './models/PressRelease';
 export type { Project } from './models/Project';
 export type { ProjectList } from './models/ProjectList';
 export type { Question } from './models/Question';

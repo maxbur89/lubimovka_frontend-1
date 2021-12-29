@@ -19,11 +19,7 @@ export const pressReleasesData: PressReleases= {
   years: [
     2021,
     2020,
-    2015,
-    2014,
-    1993,
-    1989,
-    1984
+    2015
   ],
   pressReleases: [
     {
