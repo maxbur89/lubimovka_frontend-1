@@ -1,7 +1,6 @@
 import { IForPressPressReleasesViewProps } from '../for-press-press-releases-view';
 
 export const pressReleaseString: IForPressPressReleasesViewProps = {
-  defaultCover: '/images/for-press/for-press-cover.jpg',
   years:  [
     2015,
     1989,

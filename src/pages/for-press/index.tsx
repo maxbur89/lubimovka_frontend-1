@@ -4,7 +4,7 @@ import Head from 'next/head';
 import { AppLayout } from 'components/app-layout/index';
 import { ForPressHero } from 'components/for-press-hero';
 import { ForPressPressReleasesView } from 'components/for-press-press-releases-view';
-import { pressReleases, forPressProps, prPerson } from '../../mocks/data/forPress';
+import { pressReleasesData, forPressProps, prPerson } from '../../mocks/data/forPress';
 
 const ForPress: NextPage = () => {
   return (
@@ -28,7 +28,7 @@ const ForPress: NextPage = () => {
           photo: prPerson.photo,
         }
       }}/>
-      <ForPressPressReleasesView defaultCover={pressReleases.defaultCover} pressReleases={pressReleases.pressReleases}/>
+      <ForPressPressReleasesView pressReleases={pressReleasesData.pressReleases} years={pressReleasesData.years}/>
     </AppLayout>
   );
 };

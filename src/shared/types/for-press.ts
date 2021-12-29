@@ -16,7 +16,7 @@ export type PRPerson = {
 }
 
 export type PressReleases = {
-  defaultCover: string,
+  years: number[],
   pressReleases: PressRelease[],
 }
 
@@ -24,18 +24,7 @@ export type PressRelease = {
   year: number,
   cover: Url,
   downloadLink: Url,
-  contents: Content[]
+  title: string,
+  contents: string,
 }
-
-export type Content = TextContent<'text' | 'title' | 'preamble'> | ListContent
-
-export type ListContent = {
-  content_type: 'list',
-  content_item: Record<'list', string[]>;
-}
-
-export type TextContent<T extends string> = T extends T ? {
-  content_type: T,
-  content_item: Record<T, string>;
-} : never
 
