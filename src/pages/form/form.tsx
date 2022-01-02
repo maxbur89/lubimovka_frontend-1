@@ -13,6 +13,19 @@ import {
   validPhoneNumberRegexp,
 } from 'shared/constants/regexps';
 import { Nullable } from 'shared/types';
+import { fetcher } from 'shared/fetcher';
+
+interface IParticipation {
+  first_name: string;
+  last_name: string;
+  birth_year: string;
+  city: string;
+  phone_number: string;
+  email: string;
+  title: string;
+  year: string;
+  file: Nullable<File>;
+}
 
 enum ActionTypes {
   FieldChange,
@@ -20,7 +33,7 @@ enum ActionTypes {
 }
 
 type Action<T = unknown> =
-  { type: ActionTypes.FieldChange, payload: { name: string, value: T} }
+  { type: ActionTypes.FieldChange, payload: { name: string, value: T } }
   | { type: ActionTypes.Reset }
 
 const initialFormState = {
@@ -68,40 +81,77 @@ const Participation: NextPage = () => {
   } = formState;
 
   const router = useRouter();
+  const currentYear = new Date().getFullYear().toString();
 
   const getFirstNameError = () => {
+    if (!firstName.value.length) {
+      return 'Это поле не может быть пустым';
+    }
+
     if (firstName.value.length < 2) {
-      return 'Имя должно содержать минимум 2 символа';
+      return 'Имя должно состоять более чем из 2 символов';
+    }
+
+    if (firstName.value.length > 50) {
+      return 'Имя должно состоять менее чем из 50 символов';
     }
 
     return;
   };
 
   const getLastNameError = () => {
+    if (!lastName.value.length) {
+      return 'Это поле не может быть пустым';
+    }
+
     if (lastName.value.length < 2) {
       return 'Фамилия должна содержать минимум 2 символа';
+    }
+
+    if (lastName.value.length > 50) {
+      return 'Фамилия должна состоять менее чем из 50 символов';
     }
 
     return;
   };
 
   const getBirthYearError = () => {
+    if (!birthYear.value.length) {
+      return 'Это поле не может быть пустым';
+    }
+
     if (!validYearRegexp.test(birthYear.value)) {
-      return 'Неверный год рождения';
+      return 'Убедитесь, что это значение больше либо равно 1900';
+    }
+
+    if (birthYear.value > currentYear) {
+      return `Убедитесь, что это значение больше либо равно ${currentYear}`;
     }
 
     return;
   };
 
   const getCityError = () => {
+    if (!city.value.length) {
+      return 'Это поле не может быть пустым';
+    }
+
     if (city.value.length < 2) {
       return 'Город должен содержать минимум 2 символа';
+    }
+
+    if (city.value.length > 50) {
+      return 'Город должен состоять менее чем из 50 символов';
     }
 
     return;
   };
 
   const getPhoneNumberError = () => {
+    if (!phoneNumber.value.length) {
+      return 'Это поле не может быть пустым';
+    }
+
     if (!validPhoneNumberRegexp.test(phoneNumber.value)) {
       return 'Некорректный номер телефона';
     }
@@ -111,11 +161,11 @@ const Participation: NextPage = () => {
 
   const getEmailError = () => {
     if (!email.value.length) {
-      return 'Поле E-mail обязательно для заполнения';
+      return 'Это поле не может быть пустым';
     }
 
     if (!validEmailRegexp.test(email.value)) {
-      return 'Неверный формат адреса электронной почты';
+      return 'Введите правильный адрес электронной почты';
     }
 
     return;
@@ -123,15 +173,27 @@ const Participation: NextPage = () => {
 
   const getPlayTitleError = () => {
     if (!playTitle.value.length) {
-      return 'Название обязательно для заполнения';
+      return 'Это поле не может быть пустым';
+    }
+
+    if (playTitle.value.length > 200) {
+      return 'Название пьесы должно состоять менее чем из 200 символов';
     }
 
     return;
   };
 
   const getPlayYearError = () => {
+    if (!playYear.value.length) {
+      return 'Это поле не может быть пустым';
+    }
+
     if (!validYearRegexp.test(playYear.value)) {
-      return 'Неверный год';
+      return 'Убедитесь, что это значение больше либо равно 1900';
+    }
+
+    if (playYear.value > currentYear) {
+      return `Убедитесь, что это значение больше либо равно ${currentYear}`;
     }
 
     return;
@@ -163,6 +225,22 @@ const Participation: NextPage = () => {
     });
   };
 
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    sendPlay({
+      year: playYear.value,
+      first_name: firstName.value,
+      last_name: lastName.value,
+      birth_year: birthYear.value,
+      city: city.value,
+      phone_number: phoneNumber.value,
+      email: email.value,
+      title: playTitle.value,
+      file: playFile.value,
+    });
+  };
+
   const canSubmit = (
     !getFirstNameError()
     && !getLastNameError()
@@ -175,8 +253,20 @@ const Participation: NextPage = () => {
     && !getPlayFileError()
   );
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const sendPlay = async (question: IParticipation) => {
+    try {
+      await fetcher<IParticipation>('/library/participation/', {
+        method: 'POST',
+        body: JSON.stringify(question),
+        headers: {
+          'Content-type': 'application/json'
+        },
+      });
+    } catch (error) {
+      // TODO: обработать  ошибки
+      return;
+    }
+
     router.push('/form/success');
   };
 
