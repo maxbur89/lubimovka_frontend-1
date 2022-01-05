@@ -17,7 +17,7 @@ export type PRPerson = {
 
 export type PressReleases = {
   years: number[],
-  pressReleases: PressRelease[],
+  pressRelease: PressRelease,
 }
 
 export type PressRelease = {

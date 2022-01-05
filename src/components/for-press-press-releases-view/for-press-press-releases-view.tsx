@@ -13,14 +13,14 @@ import styles from './for-press-press-releases-view.module.css';
 const cx = cn.bind(styles);
 
 export interface IForPressPressReleasesViewProps {
-  pressReleases: PressRelease[],
   years: number[],
+  pressRelease: PressRelease;
 }
 
 type PressRelease = {
-  year: number,
+  year?: number,
   cover: Url,
-  downloadLink: Url,
+  downloadLink?: Url,
   title: string,
   contents: string,
 }
@@ -30,7 +30,7 @@ export const ForPressPressReleasesView: FC<IForPressPressReleasesViewProps> = (p
   const pressReleaseYears = props.years.sort((a, b) => b - a);
   const pressReleaseDefaultYear = pressReleaseYears[0];
   const [pressReleaseYearSelected, setPressReleaseYearSelected] = useState<string[] | number>(pressReleaseDefaultYear);
-  const pressReleaseSelected = props.pressReleases.find(i => i.year === pressReleaseYearSelected);
+  const pressReleaseSelected = props.pressRelease;
 
   const isMobile = useMediaQuery(`(max-width: ${breakpoints['tablet-portrait']})`);
 
