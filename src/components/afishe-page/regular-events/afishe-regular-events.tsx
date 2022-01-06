@@ -14,8 +14,8 @@ export const RegularEvents: FC<IRegularEventsProps> = (props) => {
     <section className={styles.section}>
       {data.map((event) => (
         <AnnouncedPlayCard key={event.id} date={event.date} title={event.title}
-          dramatists={event.dramatists}
-          directors={event.directors} buttonLink={event.buttonLink}
+          team={event.team}
+          buttonLink={event.buttonLink}
           className={styles.event} projectText={event.projectText} isPerformance={event.isPerformance}
           imageUrl={event.imageUrl} description={event.description}/>
       ))}

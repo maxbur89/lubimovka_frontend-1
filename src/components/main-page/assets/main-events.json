@@ -4,8 +4,17 @@
     "id": 1,
     "date": "2021-12-12T17:00:00.000Z",
     "title": "Вот Иф",
-    "playwrightArray": [ "Ольга Казакова" ],
-    "directorArray": [ "Катя Ганюшина" ],
+    "team":
+    [
+      {
+        "name": "Драматурги",
+        "persons": ["Ольга Казакова", "Антон Чехов"]
+      },
+      {
+        "name": "Режиссёр",
+        "persons": ["Катя Ганюшина"]
+      }
+    ],
     "buttonLink": "/",
     "projectCopy": "читка проекта Любимовка.Ещё",
     "paid": false
@@ -15,8 +24,17 @@
     "id": 2,
     "date": "2021-12-15T08:00:00.000Z",
     "title": "Про линя",
-    "playwrightArray": [ "Ольга Казакова" ],
-    "directorArray": [ "Катя Ганюшина" ],
+    "team":
+    [
+      {
+        "name": "Драматург",
+        "persons": ["Ольга Казакова"]
+      },
+      {
+        "name": "Режиссёр",
+        "persons": ["Катя Ганюшина"]
+      }
+    ],
     "buttonLink": "/",
     "projectCopy": "читка проекта Любимовка.Ещё",
     "coverResourceUrl": "/images/main/performance_solnechnaya_liniya.jpg"
@@ -26,8 +44,17 @@
     "id": 3,
     "date": "2021-12-15T08:00:00.000Z",
     "title": "МАМА",
-    "playwrightArray": [ "Ольга Казакова" ],
-    "directorArray": [ "Катя Ганюшина" ],
+    "team":
+    [
+      {
+        "name": "Драматург",
+        "persons": ["Ольга Казакова"]
+      },
+      {
+        "name": "Режиссёр",
+        "persons": ["Катя Ганюшина"]
+      }
+    ],
     "buttonLink": "/",
     "projectCopy": "читка проекта Любимовка.Ещё",
     "coverResourceUrl": "/images/main/performance_mama.jpg",
@@ -38,8 +65,17 @@
     "id": 4,
     "date": "2021-12-15T08:00:00.000Z",
     "title": "Коммуналка на Петроградской",
-    "playwrightArray": [ "Ольга Казакова" ],
-    "directorArray": [ "Катя Ганюшина" ],
+    "team":
+    [
+      {
+        "name": "Драматург",
+        "persons": ["Ольга Казакова"]
+      },
+      {
+        "name": "Режиссёр",
+        "persons": ["Катя Ганюшина"]
+      }
+    ],
     "buttonLink": "/",
     "projectCopy": "читка проекта Любимовка.Ещё",
     "paid": true
@@ -49,8 +85,7 @@
     "id": 5,
     "date": "2021-12-15T08:00:00.000Z",
     "title": "Что я узнал о творчестве благодаря драматургам",
-    "playwrightArray": [],
-    "directorArray": [],
+    "team": [],
     "eventDescription": "Гости расскажут о своём творческом и организационном опыте и вдохновят аудиторию преодолевать любые границы.",
     "buttonLink": "/",
     "projectCopy": "читка проекта Любимовка.Ещё"
@@ -60,8 +95,17 @@
     "id": 6,
     "date": "2021-12-15T08:00:00.000Z",
     "title": "Про линя",
-    "playwrightArray": [ "Ольга Казакова" ],
-    "directorArray": [ "Катя Ганюшина" ],
+    "team":
+    [
+      {
+        "name": "Драматург",
+        "persons": ["Ольга Казакова"]
+      },
+      {
+        "name": "Режиссёр",
+        "persons": ["Катя Ганюшина"]
+      }
+    ],
     "buttonLink": "/",
     "projectCopy": "читка проекта Любимовка.Ещё",
     "coverResourceUrl": "/images/main/performance_s_uchilitscha.jpg",

@@ -9,8 +9,7 @@ interface IItem {
   type: string;
   date: string;
   title: string;
-  playwrightArray: string [];
-  directorArray: string [];
+  team: TeamEntry[];
   eventDescription?: string;
   buttonLink: string;
   coverResourceUrl?: string;
@@ -19,6 +18,10 @@ interface IItem {
 }
 interface IMainEventsProps {
   data: IItem[]
+}
+type TeamEntry = {
+  name: string;
+  persons: string [];
 }
 
 export const MainEvents: FC<IMainEventsProps> = ({ data }) => {
@@ -33,8 +36,7 @@ export const MainEvents: FC<IMainEventsProps> = ({ data }) => {
                 id={item.id}
                 date={item.date}
                 title={item.title}
-                dramatists={item.playwrightArray}
-                directors={item.directorArray}
+                team={item.team}
                 description={item.eventDescription && item.eventDescription}
                 projectText={item.projectCopy}
                 buttonLink={item.buttonLink}
