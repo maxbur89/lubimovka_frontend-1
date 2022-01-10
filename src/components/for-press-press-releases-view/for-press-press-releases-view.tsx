@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useEffect } from 'react';
 import cn from 'classnames/bind';
 import Image from 'next/image';
 
@@ -14,11 +14,13 @@ const cx = cn.bind(styles);
 
 export interface IForPressPressReleasesViewProps {
   years: number[],
+  pressReleaseYearSelected: number;
+  pressReleaseDefaultYear: number;
+  setPressReleaseYearSelected: any;
   pressRelease: PressRelease;
 }
 
 type PressRelease = {
-  year?: number,
   cover: Url,
   downloadLink?: Url,
   title: string,
@@ -27,10 +29,14 @@ type PressRelease = {
 
 export const ForPressPressReleasesView: FC<IForPressPressReleasesViewProps> = (props) => {
 
-  const pressReleaseYears = props.years.sort((a, b) => b - a);
-  const pressReleaseDefaultYear = pressReleaseYears[0];
-  const [pressReleaseYearSelected, setPressReleaseYearSelected] = useState<string[] | number>(pressReleaseDefaultYear);
+  // const pressReleaseYears = props.years.sort((a, b) => b - a);
+  // const pressReleaseDefaultYear = pressReleaseYears[0];
+  // const [pressReleaseYearSelected, setPressReleaseYearSelected] = useState<string[] | number>(pressReleaseDefaultYear);
   const pressReleaseSelected = props.pressRelease;
+  const pressReleaseDefaultYear = props.pressReleaseDefaultYear;
+  const pressReleaseYearSelected = props.pressReleaseYearSelected;
+  const setPressReleaseYearSelected = props.setPressReleaseYearSelected;
+  const pressReleaseYears = props.years;
 
   const isMobile = useMediaQuery(`(max-width: ${breakpoints['tablet-portrait']})`);
 

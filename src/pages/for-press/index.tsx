@@ -1,6 +1,6 @@
+import React, { useState } from 'react';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Head from 'next/head';
-
 // import { useRouter } from 'next/router';
 // import { Url } from 'shared/types';
 
@@ -10,13 +10,6 @@ import { ForPressPressReleasesView } from 'components/for-press-press-releases-v
 import { pressReleasesData, forPressProps, prPerson } from '../../mocks/data/forPress';
 import { fetcher } from 'shared/fetcher';
 import { Years, PressRelease } from 'api-typings';
-import { convertMonthToNumber } from 'components/months-and-years-filter/utils/convertMonthToNumber';
-import image from 'components/play-proposal-layout/image';
-import { loadGetInitialProps } from 'next/dist/shared/lib/utils';
-import { pressRelease } from 'components/for-press-press-releases-view/assets/pressRelease';
-
-// const router = useRouter();
-// const { year } = router.query;
 
 const fetchYears = async () => {
   let data;
@@ -44,50 +37,132 @@ const fetchPressRelelaseInitial = async () => {
   return data;
 };
 
-const fetchPressRelelaseSelected = async (year: Number) => {
-  let data;
+// const fetchAllPressReleases = (years: Years) => {
+//   let data;
 
-  try {
-    data = await fetcher<PressRelease>(`/info/press-releases/?year=${year}`);
+//   [2021, 2020, 2015, 2014, 1993].map (async (year: number, idx) => {
 
-  } catch (error) {
-    return;
-  }
+//   try {
+//     // data = await fetcher<PressRelease>(`/info/press-releases/?year=${year}`);
 
-  return data;
-};
+//   } catch (error) {
+//     return;
+//   }
+
+//   return data;
+//   })
+// };
+
+// export const getServerSideProps: GetServerSideProps<Number> = async (year: number) => {
+
+//   const years = await fetchYears();
+//   const pressReleaseSelected = await fetchPressRelelaseSelected(year);
+//   const pressReleaseInitial = await fetchPressRelelaseInitial();
+
+//   return {
+//     props: {
+//       years,
+//       pressReleaseInitial,
+//       pressReleaseSelected,
+//     },
+//   };
+// };
 
 export const getServerSideProps: GetServerSideProps = async () => {
 
   const years = await fetchYears();
-  const pressReleaseInitial = await fetchPressRelelaseInitial();
+  const pressRelease = await fetchPressRelelaseInitial();
+
+  // if (years) {
+  //   let allPressReleases = await fetchAllPressReleases(years.years);
+  // } else {
+  //   console.log('Ошибка запроса всех пресс-релизов')
+  // }
+
+  //console.log(allPressReleases);
 
   return {
     props: {
       years,
-      pressReleaseInitial,
+      pressRelease,
     },
   };
 };
 
-const ForPress = ({ years, pressReleaseInitial }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+// fetchYears()
+//   .then((years) => fetchAllPressReleases(years.years))
+//     .then(() => {
+//       return {
+//         props: {  }
+//       }
+//     }).catch (()=> {
+//     console.log('Ошибка')
+//     return {
+//       props: { }
+//     }
+//   })
+// }
 
-  const pressRelease = pressReleaseInitial[0];
+const ForPress = ({ years, pressRelease }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+
+  const pressReleaseInitial = pressRelease[0];
 
   const {
     image: cover,
     title,
     text: contents,
-    ...rest
-  } = pressRelease;
+  } = pressReleaseInitial;
 
-  const pressReleaseSelected = Object.assign (
+  const pressReleaseToRender = Object.assign (
     {
       cover,
       title,
       contents
     }
   );
+
+  const pressReleaseYears = years.years.sort((a: number, b: number) => b - a);
+  const pressReleaseDefaultYear = pressReleaseYears[0];
+  // const [pressReleaseYearSelected, setPressReleaseYearSelected] = useState<string[] | number>(pressReleaseDefaultYear);
+  const [pressReleaseYearSelected, setPressReleaseYearSelected] = useState<number>(pressReleaseDefaultYear);
+
+  // console.log(pressReleaseYearSelected);
+
+  //  const getServerSideProps: GetServerSideProps = async () => {
+
+  //     const pressRelease = await fetchPressRelelaseSelected(pressReleaseYearSelected);
+
+  //     return {
+  //       props: {
+  //         pressRelease,
+  //       },
+  //     };
+  //   };
+
+  // const PressReleaseSelected = ({ pressRelease }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+
+  // const router = useRouter();
+
+  // useEffect(() => {
+
+  //   setPressReleaseYearSelected(pressReleaseYearSelected);
+  //   router.push(`/for-press/?year=${pressReleaseYearSelected}`);
+  // }, [ pressReleaseYearSelected ]);
+
+  // const {
+  //   image: cover,
+  //   title,
+  //   text: contents,
+  //   ...rest
+  // } = pressRelease;
+
+  // const pressReleaseToRender = Object.assign (
+  //   {
+  //     cover,
+  //     title,
+  //     contents
+  //   }
+  // );
 
   return (
     <AppLayout>
@@ -111,8 +186,12 @@ const ForPress = ({ years, pressReleaseInitial }: InferGetServerSidePropsType<ty
         }
       }}/>
       <ForPressPressReleasesView
-        pressRelease={pressReleaseSelected}
-        years={years.years}/>
+        pressRelease={pressReleaseToRender}
+        pressReleaseDefaultYear={pressReleaseDefaultYear}
+        pressReleaseYearSelected={pressReleaseYearSelected}
+        setPressReleaseYearSelected={setPressReleaseYearSelected}
+        years={years.years}
+      />
     </AppLayout>
   );
 };
