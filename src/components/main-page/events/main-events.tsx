@@ -33,7 +33,6 @@ export const MainEvents: FC<IMainEventsProps> = ({ data }) => {
             <li key={item.id} className={styles.list}>
               <AnnouncedPlayCard
                 isPerformance={item.type === 'PERFORMANCE'}
-                id={item.id}
                 date={item.date}
                 title={item.title}
                 team={item.team}
