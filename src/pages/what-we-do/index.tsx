@@ -16,7 +16,7 @@ import SelectionData from 'components/what-we-do-page/assets/selection-data.json
 import SelectionContacts from 'components/what-we-do-page/assets/contacts-data.json';
 
 const Page: NextPage = ():JSX.Element => (
-  <AppLayout>
+  <AppLayout headerTheme="brand">
     <Head>
       <title>{'what-we-do'}</title>
     </Head>
