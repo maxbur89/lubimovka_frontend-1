@@ -1,6 +1,7 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import cn from 'classnames/bind';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 import { Url } from 'shared/types';
 import { Droplist } from 'components/ui/droplist';
@@ -14,10 +15,9 @@ const cx = cn.bind(styles);
 
 export interface IForPressPressReleasesViewProps {
   years: number[],
-  pressReleaseYearSelected: number;
   pressReleaseDefaultYear: number;
-  setPressReleaseYearSelected: any;
   pressRelease: PressRelease;
+  PDF: any;
 }
 
 type PressRelease = {
@@ -29,20 +29,31 @@ type PressRelease = {
 
 export const ForPressPressReleasesView: FC<IForPressPressReleasesViewProps> = (props) => {
 
-  // const pressReleaseYears = props.years.sort((a, b) => b - a);
-  // const pressReleaseDefaultYear = pressReleaseYears[0];
-  // const [pressReleaseYearSelected, setPressReleaseYearSelected] = useState<string[] | number>(pressReleaseDefaultYear);
   const pressReleaseSelected = props.pressRelease;
   const pressReleaseDefaultYear = props.pressReleaseDefaultYear;
-  const pressReleaseYearSelected = props.pressReleaseYearSelected;
-  const setPressReleaseYearSelected = props.setPressReleaseYearSelected;
   const pressReleaseYears = props.years;
+  const PDF = props.PDF;
+
+  // const router = useRouter();
 
   const isMobile = useMediaQuery(`(max-width: ${breakpoints['tablet-portrait']})`);
 
-  useEffect(() => {
-    setPressReleaseYearSelected(pressReleaseYearSelected);
-  }, [ pressReleaseYearSelected, isMobile ]);
+  const [pressReleaseYearSelected, setPressReleaseYearSelected] = useState<string[] | number>(pressReleaseDefaultYear);
+
+  // useEffect(() => {
+  //   setPressReleaseYearSelected(pressReleaseYearSelected);
+  //   router.push(
+  //     {
+  //       pathname: `/for-press/[year]`,
+  //       query: {
+  //         pressReleaseYearSelected,
+  //       }
+  //     },
+  //     `/for-press/${pressReleaseYearSelected}`,
+  // );
+  // }, [ pressReleaseYearSelected, isMobile ]);
+
+  // console.log(pressReleaseSelected);
 
   return (
     <section className={cx('main')}>
@@ -76,12 +87,12 @@ export const ForPressPressReleasesView: FC<IForPressPressReleasesViewProps> = (p
             : pressReleaseSelected !== undefined && isMobile
               ? 'Скачать пресс-релиз в .pdf'
               : `Скачать пресс-релиз ${pressReleaseYearSelected} года в .pdf`}
-          isLink={pressReleaseSelected !== undefined}
-          disabled={pressReleaseSelected === undefined}
-          href={pressReleaseSelected !== undefined ? pressReleaseSelected.downloadLink : ''}
+          isLink={PDF !== undefined}
+          disabled={PDF === undefined}
+          href={PDF !== undefined ? PDF : ''}
         />
       </nav>
-      {pressReleaseSelected && pressReleaseSelected.cover !== null &&
+      {pressReleaseSelected !==undefined && pressReleaseSelected.cover !== null &&
         <div className={cx('coverContainer')}>
           <div className={cx('cover')}>
             <Image
