@@ -4,6 +4,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 // import { Url } from 'shared/types';
 
+import { addBaseUrlToApiPath } from 'shared/helpers/url';
 import { AppLayout } from 'components/app-layout/index';
 import { ForPressHero } from 'components/for-press-hero';
 import { ForPressPressReleasesView } from 'components/for-press-press-releases-view';
@@ -50,19 +51,6 @@ const fetchPressRelelaseSelected = async (year: number) => {
   return data;
 };
 
-// const fetchPressRelelasePDF = async (id: number) => {
-//   let data;
-
-//   try {
-//     data = await fetcher(`/info/press-releases/${id}/download`);
-
-//   } catch (error) {
-//     return;
-//   }
-
-//   return data;
-// };
-
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
   const years = await fetchYears();
@@ -70,7 +58,6 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const pressReleaseYears = years.years.sort((a: number, b: number) => b - a);
   const pressReleaseDefaultYear = pressReleaseYears[0];
   const pressReleaseFromServer = await fetchPressRelelaseSelected((Number(params.year)));
-  // const pressRelease = pressReleaseFromServer[0];
 
   let pressRelease;
 
@@ -81,6 +68,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   }
 
   const yearSelected = params.year;
+  const pressReleasePDF = addBaseUrlToApiPath(`/info/press-releases/${pressRelease.id}/download/`);
 
   return {
     props: {
@@ -88,11 +76,12 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       pressReleaseDefaultYear,
       yearSelected,
       pressRelease,
+      pressReleasePDF
     },
   };
 };
 
-const ForPress = ({ pressReleaseYears, pressReleaseDefaultYear, yearSelected, pressRelease }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const ForPress = ({ pressReleaseYears, pressReleaseDefaultYear, yearSelected, pressRelease, pressReleasePDF }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 
   const {
     image: cover,
@@ -133,7 +122,7 @@ const ForPress = ({ pressReleaseYears, pressReleaseDefaultYear, yearSelected, pr
         pressRelease={pressReleaseToRender}
         pressReleaseDefaultYear={yearSelected}
         years={pressReleaseYears}
-        PDF="null"
+        PDF={pressReleasePDF}
       />
     </AppLayout>
   );

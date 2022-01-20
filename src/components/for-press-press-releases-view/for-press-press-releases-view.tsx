@@ -17,7 +17,7 @@ export interface IForPressPressReleasesViewProps {
   years: number[],
   pressReleaseDefaultYear: number;
   pressRelease: PressRelease;
-  PDF: any;
+  PDF: Url;
 }
 
 type PressRelease = {
