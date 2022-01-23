@@ -10,33 +10,12 @@ const News = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => 
 
   const [news, setNews] = useState<Array<NewsItemList> | undefined>(props.results);
   const [offset, setOffset] = useState<number>(0);
+  const [hasMore, setHasMore] = useState(true);
+  const [count, setCount] = useState<number>(0);
 
-  const scrollHandler = useCallback(() => {
-
-    const height = document.body.offsetHeight;
-    const screenHeight = window.innerHeight;
-
-    const scrolled = window.scrollY;
-    const threshold = height - screenHeight / 3;
-    const position = scrolled + screenHeight;
-
-    if (position >= threshold) {
-      if (news !== undefined && news?.length >= offset) {
-        setOffset(offset + 12);
-        // console.log('scroll');
-      }
-    }
-
-  }, [news, offset]);
-
-  useEffect(() => {
-    fetchNewsList(12, offset)
+  const getMoreNews = async () => {
+    fetchNewsList(5, offset)
       .then(data => {
-        // if (!data?.results) {
-        //   return news;
-        // } if (news !== undefined) {
-        //   return news.concat(data.results);
-        // }
         const results = data?.results;
 
         if (!news && !results)
@@ -52,21 +31,33 @@ const News = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => 
       }).then(data => {
         setNews(data)
       })
-      .catch(error => error);
-  }, [offset]);
+      .catch(error => error)
+  }
+
+  const getNumberOfNews = async () => {
+    fetchNewsList(0, 0)
+      .then(dataNumbers => {
+        const countOfNews = dataNumbers?.count;
+        return Number(countOfNews);
+      }).then(dataNumbers => {
+        setCount(dataNumbers);
+        console.log(dataNumbers)
+      })
+  }
+
+  getNumberOfNews()
 
   useEffect(() => {
-    document.addEventListener('scroll', scrollHandler);
-    return function () {
-      document.removeEventListener('scroll', scrollHandler);
-    };
-  }, [scrollHandler]);
+    setHasMore(setCount > setNews.length ? true : false)
+  }, [news])
 
   return (
     <AppLayout>
       <NewsPage
         setNews={setNews}
         news={news || []}
+        nextOnScroll={getMoreNews}
+        hasMoreOnScroll={hasMore}
       />
     </AppLayout>
   );
@@ -75,7 +66,7 @@ const News = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => 
 const fetchNewsList = async (limit: number, offset: number) => {
   let data;
   try {
-    data = await fetcher<PaginatedNewsItemListList>(`/news/?limit=${limit}&offset=${offset}`);
+    data = await fetcher<PaginatedNewsItemListList>(`/news?limit=${limit}&offset=${offset}`);
   } catch (error) {
     return;
   }
@@ -84,7 +75,7 @@ const fetchNewsList = async (limit: number, offset: number) => {
 
 export const getServerSideProps: GetServerSideProps<PaginatedNewsItemListList> = async () => {
 
-  const newsList = await fetchNewsList(12, 0);
+  const newsList = await fetchNewsList(5, 0);
 
   if (!newsList) {
     return {

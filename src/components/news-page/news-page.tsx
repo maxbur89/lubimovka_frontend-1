@@ -6,6 +6,7 @@ import { NewsList } from './news-list';
 import { MonthsAndYearsFilter } from 'components/months-and-years-filter';
 import { NewsItemList, PaginatedNewsItemListList } from 'api-typings';
 import { fetcher } from 'shared/fetcher';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 // import MockNewsData from './assets/mock-data-news.json';
 import style from './news-page.module.css';
@@ -15,6 +16,8 @@ const cx = cn.bind(style);
 interface INewsPageProps {
   setNews: (news: NewsItemList[] | undefined) => void;
   news: NewsItemList[];
+  nextOnScroll: any;
+  hasMoreOnScroll: any;
 }
 
 const fetchNewsListFiltered = async (month: number, year: number) => {
@@ -30,7 +33,9 @@ const fetchNewsListFiltered = async (month: number, year: number) => {
 export const NewsPage: FC<INewsPageProps> = (props: INewsPageProps): JSX.Element => {
   const {
     setNews,
-    news
+    news,
+    nextOnScroll,
+    hasMoreOnScroll,
   } = props;
 
   const [month, setMonth] = useState<number>();
@@ -41,22 +46,28 @@ export const NewsPage: FC<INewsPageProps> = (props: INewsPageProps): JSX.Element
       fetchNewsListFiltered(month, year)
         .then(news => {
           setNews(news?.results);
-
         })
-        .catch(error => error); //console.log(error)
+        .catch(error => error);
     }
 
   }, [year, month, setNews]);
 
   return (
     <>
-      <NewsTitle title='Новости'></NewsTitle>
+      <NewsTitle title='Новости' />
       <MonthsAndYearsFilter className={cx('droplistСontainer')}
         filterCallBack={(month, year) => {
           setMonth(month);
           setYear(year);
-        }}></MonthsAndYearsFilter>
-      <NewsList newsListData={news}></NewsList>
+        }} />
+      <InfiniteScroll style={{ overflow: 'hidden' }}
+        dataLength={news.length}
+        next={nextOnScroll}
+        hasMore={hasMoreOnScroll}
+        loader={''}
+      >
+        <NewsList newsListData={news} />
+      </InfiniteScroll>
     </>
   );
 };
