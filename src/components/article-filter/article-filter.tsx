@@ -27,12 +27,10 @@ export const ArticleFilter: FC<IArticleFilterProps> = (props) => {
     onYearChange,
   } = props;
 
-  const currentYear = new Date().getFullYear();
-
   return (
     <div className={cx('root', className)}>
       <Droplist
-        data={createMonthList(year || currentYear)}
+        data={MONTHS}
         type="radio"
         defaultValue={'Месяц'}
         cb={([month]) => onMonthChange(month)}
@@ -56,26 +54,12 @@ export const ArticleFilter: FC<IArticleFilterProps> = (props) => {
   );
 };
 
-function createMonthList(year: number): string[] {
-  let monthList: string[] = MONTHS;
-
-  if(year === new Date().getFullYear()) {
-    const currentMonth = currentDate.getMonth();
-    monthList = [];
-    for(let month = 0; month < currentMonth+1; ++month) {
-      monthList.push(MONTHS[month]);
-    }
-  }
-
-  return monthList;
-};
-
 function createYearList(): string[] {
   const yearList = [];
 
   let currentYear = currentDate.getFullYear();
 
-  for(let i = 0; i < currentDate.getFullYear() - 2012; ++i) {
+  for (let i = 0; i < currentDate.getFullYear() - 2012; ++i) {
     yearList.push(String(currentYear--));
   }
 

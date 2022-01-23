@@ -5,12 +5,12 @@ import { NewsCard } from 'components/ui/news-card';
 
 import styles from './news-list.module.css';
 
-interface NewsCardData {
+export interface NewsCardData {
   id: number;
   title: string;
   description: string;
   image?: string;
-  pub_date: string;
+  pub_date?: string;
 }
 
 interface INewsList {
