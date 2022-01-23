@@ -1,9 +1,8 @@
-import { FC, useRef, useState } from 'react';
+import { FC } from 'react';
 import cn from 'classnames/bind';
 
-import { Droplist, IDroplistPublic } from '../ui/droplist';
-import { convertMonthToNumber } from './utils/convertMonthToNumber';
-import { createMonthList, createYearList } from './utils/createList';
+import { Droplist } from 'components/ui/droplist';
+import { MONTHS } from 'shared/constants/months-and-years';
 
 import styles from './article-filter.module.css';
 
@@ -11,39 +10,24 @@ const cx = cn.bind(styles);
 
 interface IArticleFilterProps {
   className?: string;
-  filterCallBack: (month?: number, year?: number) => void
+  month?: number;
+  year?: number;
+  onMonthChange: (month: string) => void;
+  onYearChange: (year: string) => void;
 }
+
+const currentDate = new Date();
 
 export const ArticleFilter: FC<IArticleFilterProps> = (props) => {
   const {
     className,
-    filterCallBack,
+    month,
+    year,
+    onMonthChange,
+    onYearChange,
   } = props;
 
-  const droplistRef = useRef(null) as React.RefObject<IDroplistPublic>;
-  const currentMonth:number = new Date().getMonth() + 1;
-  const currentYear:number = new Date().getFullYear();
-
-  const [month, setMonth] = useState<number>();
-  const [year, setYear] = useState<number>();
-
-  function callBackForMonth(selectMonth: string) {
-    if(selectMonth !== 'Месяц' && selectMonth !== undefined){
-      setMonth(convertMonthToNumber(selectMonth));
-      filterCallBack(month, year);
-    }
-  }
-
-  function callBackForYear(selectYear: string) {
-    if(selectYear !== 'Год' && selectYear !== undefined){
-      setYear(Number(selectYear));
-      if(month &&  month > currentMonth && Number(selectYear) === currentYear){
-        droplistRef.current?.deleteAll();
-        setMonth(undefined);
-      }
-      filterCallBack(month, year);
-    }
-  }
+  const currentYear = new Date().getFullYear();
 
   return (
     <div className={cx('root', className)}>
@@ -51,24 +35,49 @@ export const ArticleFilter: FC<IArticleFilterProps> = (props) => {
         data={createMonthList(year || currentYear)}
         type="radio"
         defaultValue={'Месяц'}
-        cb={([month]) => callBackForMonth(month)}
+        cb={([month]) => onMonthChange(month)}
         className={cx('droplistTypelistMonths')}
-        ref={droplistRef}
       />
+      <span className={cx('error', 'errorMonth', { errorVisible: month === undefined && year })}>
+        Выберите месяц
+      </span>
       <Droplist
         data={createYearList()}
         type="radio"
         defaultValue={'Год'}
-        cb={([year]) => callBackForYear(year)}
+        cb={([year]) => onYearChange(year)}
         className={cx('droplistTypelistYears')}
       />
-      <span className={cx('error', 'errorMonth', { errorVisible:month === undefined && year })}>
-        Выберите месяц
-      </span>
-      <span className={cx('error', 'errorYear', { errorVisible:month !== undefined && !year })}>
+      <span className={cx('error', 'errorYear', { errorVisible: month !== undefined && !year })}>
         Выберите год
       </span>
     </div>
 
   );
+};
+
+function createMonthList(year: number): string[] {
+  let monthList: string[] = MONTHS;
+
+  if(year === new Date().getFullYear()) {
+    const currentMonth = currentDate.getMonth();
+    monthList = [];
+    for(let month = 0; month < currentMonth+1; ++month) {
+      monthList.push(MONTHS[month]);
+    }
+  }
+
+  return monthList;
+};
+
+function createYearList(): string[] {
+  const yearList = [];
+
+  let currentYear = currentDate.getFullYear();
+
+  for(let i = 0; i < currentDate.getFullYear() - 2012; ++i) {
+    yearList.push(String(currentYear--));
+  }
+
+  return yearList;
 };
