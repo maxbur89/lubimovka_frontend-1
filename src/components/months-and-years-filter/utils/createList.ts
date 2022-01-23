@@ -1,5 +1,5 @@
 // Формирует список месяцев
-import { MONTHS } from '../../../shared/constants/months-and-years';
+import { MONTHS } from '../../../shared/constants/months';
 
 const currentDate = new Date();
 

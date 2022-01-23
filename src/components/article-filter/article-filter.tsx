@@ -2,7 +2,7 @@ import { FC } from 'react';
 import cn from 'classnames/bind';
 
 import { Droplist } from 'components/ui/droplist';
-import { MONTHS } from 'shared/constants/months-and-years';
+import { MONTHS } from 'shared/constants/months';
 
 import styles from './article-filter.module.css';
 
