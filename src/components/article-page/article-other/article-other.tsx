@@ -1,10 +1,10 @@
 import React from 'react';
 import cn from 'classnames/bind';
 
-import { BlogList } from '../../ui/blog-card/list';
-import { BlogCard } from '../../ui/blog-card';
-import { BlogItem, NewsItem } from '../../../shared/types';
-import { NewsList } from '../../news-page/news-list';
+import { NewsList } from 'components/news-list';
+import { BlogList } from 'components/ui/blog-card/list';
+import { BlogCard } from 'components/ui/blog-card';
+import { BlogItem, NewsItem } from 'shared/types';
 
 import styles from './article-other.module.css';
 

@@ -3,9 +3,7 @@ import cn from 'classnames/bind';
 
 import { NewsCard } from 'components/ui/news-card';
 
-import style from './news-list.module.css';
-
-const cx = cn.bind(style);
+import styles from './news-list.module.css';
 
 interface NewsCardData {
   id: number;
@@ -13,12 +11,14 @@ interface NewsCardData {
   description: string;
   image?: string;
   pub_date: string;
-
 }
+
 interface INewsList {
   newsCardData: Array<NewsCardData>;
   className?: string;
 }
+
+const cx = cn.bind(styles);
 
 export const NewsList: FC<INewsList> = ({ newsCardData, className }) => {
   return(
