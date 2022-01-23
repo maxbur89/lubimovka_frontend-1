@@ -2,9 +2,9 @@
 export const stringify = (object: Record<string, unknown>): string => {
   if (!object) return '';
 
-  return Object.keys(object).reduce((acc, key, index, arr) => {
+  return '?' + Object.keys(object).reduce((acc, key) => {
     if (!object[key]) return acc;
 
-    return `${key}=${object[key]}${index < arr.length ? '&' : ''}`;
-  }, '?');
+    return `${acc}${acc && '&'}${key}=${object[key]}`;
+  }, '');
 };
