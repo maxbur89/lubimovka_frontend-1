@@ -1,4 +1,5 @@
 import { NextPage } from 'next';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import cn from 'classnames/bind';
 import Image from 'next/image';
@@ -15,6 +16,7 @@ import { FirstScreen } from 'components/main-page/first-screen';
 import { AppLayout } from 'components/app-layout';
 import { useMediaQuery } from 'shared/hooks/use-media-query';
 import * as breakpoints from 'shared/breakpoints.js';
+import { Droplist } from 'components/ui/droplist';
 
 import data from 'components/main-page/assets/mock-data.json';
 import mainEventsData from 'components/main-page/assets/main-events.json';
@@ -26,6 +28,42 @@ import styles from './index.module.css';
 const cx = cn.bind(styles);
 
 const MainPage: NextPage = () => {
+  const [list, setList] = useState<string[]>(
+    [
+      'January', 'February',
+      'March', 'April',
+      'MAY', 'June',
+      'JULy', 'august',
+      'September', 'Октябрь',
+      'Ноябрь', 'Декабрь',
+    ]);
+  const [selectList, setSelectList] = useState<string[]>(['Декабрь']);
+  // const [selectList, setSelectList] = useState<string>('Декабрь');
+
+  const onAdd = (element: string): void => {
+    setSelectList(state => {
+      const newState = state.slice(0);
+      newState.push(element);
+      return newState;
+    });
+  };
+
+  const onDelete = (element: string) => {
+    setSelectList(state => [...state.filter(item => item !== element)]);
+  };
+
+  // const onAdd = (element: string): void => {
+  //   setSelectList(element);
+  // };
+
+  // const onDelete = () => {
+  //   setSelectList('');
+  // };
+
+  // useEffect(() => {
+  //   console.log(selectList)
+  // }, [selectList]);
+
   const { title, events, aside, banners, platforms, partners, archive, shortList, metaTitle } = data;
   const isMobile = useMediaQuery(`(max-width: ${breakpoints['tablet-portrait']})`);
   return (
@@ -43,6 +81,13 @@ const MainPage: NextPage = () => {
             <title>{metaTitle}</title>
           </Head>
           <main className={cx('main')}>
+            <Droplist 
+              type="multiple" 
+              list={list} 
+              selectList={selectList}
+              onAdd={onAdd}
+              onDelete={onDelete}
+            />
             <FirstScreen/>
             {aside && <MainAside/>}
             {title && (
