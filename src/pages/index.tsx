@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head';
 import cn from 'classnames/bind';
 import Image from 'next/image';
@@ -16,7 +16,7 @@ import { FirstScreen } from 'components/main-page/first-screen';
 import { AppLayout } from 'components/app-layout';
 import { useMediaQuery } from 'shared/hooks/use-media-query';
 import * as breakpoints from 'shared/breakpoints.js';
-import { Droplist } from 'components/ui/droplist';
+import { Droplist, DroplistOption } from 'components/ui/droplist';
 
 import data from 'components/main-page/assets/mock-data.json';
 import mainEventsData from 'components/main-page/assets/main-events.json';
@@ -28,7 +28,7 @@ import styles from './index.module.css';
 const cx = cn.bind(styles);
 
 const MainPage: NextPage = () => {
-  const [list, setList] = useState<string[]>(
+  const [options, setOptions] = useState<string[]>(
     [
       'January', 'February',
       'March', 'April',
@@ -37,32 +37,23 @@ const MainPage: NextPage = () => {
       'September', 'Октябрь',
       'Ноябрь', 'Декабрь',
     ]);
-  const [selectList, setSelectList] = useState<string[]>(['Декабрь']);
-  // const [selectList, setSelectList] = useState<string>('Декабрь');
+  const [selectList, setSelectList] = useState<DroplistOption[]>([{ value: 11, text: 'Декабрь' }]);
 
-  const onAdd = (element: string): void => {
+  const onChange = (selectedOptions: DroplistOption) => {
+    if (selectList.find(item => item.value === selectedOptions.value)) {
+      setSelectList(state => [...state.filter(item => item.value !== selectedOptions.value)]);
+      return;
+    }
     setSelectList(state => {
       const newState = state.slice(0);
-      newState.push(element);
+      newState.push(selectedOptions);
       return newState;
     });
   };
 
-  const onDelete = (element: string) => {
-    setSelectList(state => [...state.filter(item => item !== element)]);
-  };
-
-  // const onAdd = (element: string): void => {
-  //   setSelectList(element);
+  // const onChange = (selectedOptions: DroplistOption) => {
+  //   setSelectList([selectedOptions]);
   // };
-
-  // const onDelete = () => {
-  //   setSelectList('');
-  // };
-
-  // useEffect(() => {
-  //   console.log(selectList)
-  // }, [selectList]);
 
   const { title, events, aside, banners, platforms, partners, archive, shortList, metaTitle } = data;
   const isMobile = useMediaQuery(`(max-width: ${breakpoints['tablet-portrait']})`);
@@ -83,10 +74,9 @@ const MainPage: NextPage = () => {
           <main className={cx('main')}>
             <Droplist 
               type="multiple" 
-              list={list} 
-              selectList={selectList}
-              onAdd={onAdd}
-              onDelete={onDelete}
+              options={options} 
+              selectedOptions={selectList}
+              onChange={onChange}
             />
             <FirstScreen/>
             {aside && <MainAside/>}
