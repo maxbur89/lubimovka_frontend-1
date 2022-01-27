@@ -28,15 +28,19 @@ import styles from './index.module.css';
 const cx = cn.bind(styles);
 
 const MainPage: NextPage = () => {
-  const [options, setOptions] = useState<string[]>(
-    [
-      'January', 'February',
-      'March', 'April',
-      'MAY', 'June',
-      'JULy', 'august',
-      'September', 'Октябрь',
-      'Ноябрь', 'Декабрь',
-    ]);
+  const [options, setOptions] = useState<DroplistOption[]>(
+    [{ value: 0, text: 'January' },
+      { value: 1, text: 'February' },
+      { value: 2, text: 'March' },
+      { value: 3, text: 'April' },
+      { value: 4, text: 'MAY' },
+      { value: 5, text: 'June' },
+      { value: 6, text: 'JULy' },
+      { value: 7, text: 'august' },
+      { value: 8, text: 'September' },
+      { value: 9, text: 'Октябрь' },
+      { value: 10, text: 'Ноябрь' },
+      { value: 11, text: 'Декабрь' }]);
   const [selectList, setSelectList] = useState<DroplistOption[]>([{ value: 11, text: 'Декабрь' }]);
 
   const onChange = (selectedOptions: DroplistOption) => {
