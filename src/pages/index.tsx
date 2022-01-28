@@ -68,8 +68,8 @@ const MainPage: NextPage = ({ data = main, partners }: InferGetStaticPropsType<t
 
   return (
     <div className={cx({ 'marginTop': delay })}>
-      <AppLayout 
-        hiddenPartners 
+      <AppLayout
+        hiddenPartners
         expandedHeader={displayFirstScreen}
         screenImg={first_screen && notEmptyKey(first_screen) &&
         displayFirstScreen && <div className={cx('background')} style={{  backgroundImage: `url(${first_screen.url})` }}/>}
