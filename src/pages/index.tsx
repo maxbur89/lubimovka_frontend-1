@@ -1,20 +1,21 @@
 import { NextPage, InferGetStaticPropsType, GetStaticProps } from 'next';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect/* , useCallback */ } from 'react';
 import Head from 'next/head';
 import cn from 'classnames/bind';
-import { Main, Partner } from 'api-typings';
 
+import { Main, Partner } from 'api-typings';
 import { fetcher } from 'shared/fetcher';
-import { MainTitle } from 'components/main-page/title';
+/* import { MainTitle } from 'components/main-page/title'; */
 import { MainEvents } from 'components/main-page/events';
-import { MainAside } from 'components/main-page/aside';
+/* import { MainAside } from 'components/main-page/aside'; */
 import { MainBanners } from 'components/main-page/banners';
 import { MainPlatforms } from 'components/main-page/platforms';
-import { MainShortList } from 'components/main-page/shortList';
+/* import { MainShortList } from 'components/main-page/shortList'; */
 import { MainArchive } from 'components/main-page/archive';
 import { MainFirstScreen } from 'components/main-page/first-screen';
 import { Partners } from 'components/partners';
 import { AppLayout } from 'components/app-layout';
+import useWindowDimensions from 'components/library-authors-page/useWindowDimensions';
 import { main } from 'mocks/data/main';
 
 import styles from './index.module.css';
@@ -22,40 +23,26 @@ import styles from './index.module.css';
 const cx = cn.bind(styles);
 
 const MainPage: NextPage = ({ data = main, partners }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const { first_screen, afisha, blog, news, banners, places, video_archive, short_list } = data;
-
+  const { first_screen, afisha, /* blog, news, */ banners, places, video_archive/* , short_list */ } = data;
   const [displayFirstScreen, setDisplayFirstScreen] = useState(false);
-  const [delay, setDelay] = useState(false);
-
-  const hideFirstScreen = useCallback((delay: number) => {
-    setTimeout(() => {
-      setDelay(false);
-      setDisplayFirstScreen(false);
-    }, delay);
-  }, [displayFirstScreen]);
-
-  const handlerScroll = useCallback(() => {
-    setDelay(true);
-    hideFirstScreen(1000);
-  }, [delay]);
+  const { height } = useWindowDimensions();
+  const [stickyHeader, setStickyHeader] = useState(false);
 
   useEffect(() => {
-    displayFirstScreen && window.addEventListener('scroll', handlerScroll);
-    if (displayFirstScreen === false) {
-      window.removeEventListener('scroll', handlerScroll);
+    function handleScroll() {
+      if (window.pageYOffset > height) {
+        setStickyHeader(true);
+      } else {
+        setStickyHeader(false);
+      }
     }
-    return () => {
-      window.removeEventListener('scroll', handlerScroll);
-    };
-  }), [];
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [height]);
 
   useEffect(() => {
     first_screen && notEmptyKey(first_screen) && setDisplayFirstScreen(true);
-    // Отключаю скролл, при перезагрузке страницы
-    if (window.pageYOffset !== 0) {
-      window.removeEventListener('scroll', handlerScroll);
-      setDisplayFirstScreen(false);
-    }
   }, []);
 
   function notEmpty<T>(items: T[]) {
@@ -67,38 +54,39 @@ const MainPage: NextPage = ({ data = main, partners }: InferGetStaticPropsType<t
   }
 
   return (
-    <div className={cx({ 'marginTop': delay })}>
-      <AppLayout 
-        hiddenPartners 
-        expandedHeader={displayFirstScreen}
-        screenImg={first_screen && notEmptyKey(first_screen) &&
-        displayFirstScreen && <div className={cx('background')} style={{  backgroundImage: `url(${first_screen.url})` }}/>}
+    <div>
+      {first_screen && notEmptyKey(first_screen) &&
+        displayFirstScreen && <div className={cx('background')} style={{ backgroundImage: `url(${first_screen.url})` }}/>}
+      <AppLayout
+        hiddenPartners
+        expandedHeader={!stickyHeader}
+        stickyHeader={stickyHeader}
       >
-        <>
-          <Head>
-            <title>Главная. Любимовка</title>
-          </Head>
-          <main className={cx('main')}>
-            {first_screen && notEmptyKey(first_screen) && displayFirstScreen && <MainFirstScreen {...first_screen}/>}
-            {news ? <MainAside type="news" {...news}/> : <MainAside type="blog" {...blog}/>}
-            {afisha && notEmptyKey(afisha) &&
-            <div className={cx('wrapper')}>
-              <MainTitle
-                title={afisha.title}
-                button_label={afisha.button_label}
-                description={afisha.description}
-              />
-            </div>}
-            {afisha && notEmpty(afisha.items) && <MainEvents {...afisha}/>}
-            {banners && notEmpty(banners.items) && <MainBanners {...banners}/>}
-            {short_list && notEmpty(short_list.items) && <MainShortList {...short_list}/>}
-            {places && notEmpty(places.items) && <MainPlatforms {...places}/>}
-            {video_archive && <MainArchive {...video_archive}/>}
-            {partners && notEmptyKey(partners) && <Partners {...partners}/>}
-          </main>
-        </>
+        <Head>
+          <title>Главная. Любимовка</title>
+        </Head>
+        <main className={cx('main')}>
+          {first_screen && notEmptyKey(first_screen) && displayFirstScreen && <MainFirstScreen {...first_screen}/>}
+          {/* {news ? <MainAside type="news" {...news}/> : <MainAside type="blog" {...blog}/>}
+          {afisha && notEmptyKey(afisha) &&
+          <div className={cx('wrapper')}>
+            <MainTitle
+              title={afisha.title}
+              button_label={afisha.button_label}
+              description={afisha.description}
+            />
+          </div>} */}
+          {afisha && notEmpty(afisha.items) && <MainEvents {...afisha}/>}
+          {banners && notEmpty(banners.items) && <MainBanners {...banners}/>}
+          {/* {short_list && notEmpty(short_list.items) && <MainShortList {...short_list}/>} */}
+          {places && notEmpty(places.items) && <MainPlatforms {...places}/>}
+          {video_archive && <MainArchive {...video_archive}/>}
+          {partners && notEmptyKey(partners) && <Partners {...partners}/>}
+        </main>
       </AppLayout>
+
     </div>
+
   );
 };
 
